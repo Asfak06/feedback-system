@@ -6,7 +6,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { Table } from 'react-bootstrap';
 import { API_BASE_URL } from "../../utils";
-
+import { booths } from "../../utils";
 export default function Dashboard() {
   const router = useRouter();
   const [loggedIn, setLoggedIn] = useState(false);
@@ -73,9 +73,7 @@ export default function Dashboard() {
                 <thead>
                     <tr>
                     <th>#</th>
-                    <th>Booth Number</th>
-                    <th>User Name</th>
-                    <th>User ID</th>
+                    <th>Booth Name</th>
                     <th>Feedback</th>
                     <th>Vote</th>
                     </tr>
@@ -84,11 +82,9 @@ export default function Dashboard() {
                     {feedback.map((f, index) => (
                     <tr key={f.uuid}>
                         <td>{index + 1}</td>
-                        <td>{f.boothNumber}</td>
-                        <td>{f.userName}</td>
-                        <td>{f.userId}</td>
+                        <td>{booths[f.boothNumber]}</td>
                         <td>{f.feedback}</td>
-                        <td>{f.vote}</td>
+                        <td>{f.vote===1?'liked':'disliked'}</td>
                     </tr>
                     ))}
                 </tbody>
