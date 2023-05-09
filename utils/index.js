@@ -1,5 +1,5 @@
-// export const API_BASE_URL='https://feedback-api-dc.theroyalsoft.com';
-export const API_BASE_URL='http://localhost:3003';
+export const API_BASE_URL='https://feedback-api-dc.theroyalsoft.com';
+// export const API_BASE_URL='http://localhost:3003';
 
 
 export const booths = [
