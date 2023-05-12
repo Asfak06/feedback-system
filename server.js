@@ -59,8 +59,20 @@ sequelize.sync({ force: false })
     console.error('Error creating table:', error);
   });
 
-app.use(cors({ origin: 'https://feedback-frontend-dc.theroyalsoft.com' }));
+  
+app.use(cors());
+
 // app.use(cors({ origin: 'http://localhost:3001' }));
+
+
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', 'https://feedback-frontend-dc.theroyalsoft.com');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+//   next();
+// });
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -69,6 +81,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/feedback', async (req, res) => {
+  console.log('feedback post')
   const { boothNumber, feedback, vote } = req.body;
   const uuid = uuidv4();
   try {
@@ -81,6 +94,7 @@ app.post('/api/feedback', async (req, res) => {
 });
 
 app.get('/api/dashboard', async (req, res) => {
+  console.log('dashboard counts')
   try {
     const totalUsers = await Feedback.count({ distinct: 'uuid' });
     const totalUpvotes = await Feedback.sum('vote', { where: { vote: { [Sequelize.Op.gt]: 0 } } });
@@ -93,6 +107,7 @@ app.get('/api/dashboard', async (req, res) => {
 });
 
 app.get('/api/feedback', async (req, res) => {
+  console.log('get all rows')
   try {
     const feedback = await Feedback.findAll();
     res.json(feedback);
