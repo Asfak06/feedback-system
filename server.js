@@ -36,8 +36,8 @@ function createTable() {
   }
 createTable();  
 
-// app.use(cors({ origin: 'https://feedback-frontend-dc.theroyalsoft.com' }));
-app.use(cors({ origin: 'http://localhost:3001' }));
+app.use(cors({ origin: 'https://feedback-frontend-dc.theroyalsoft.com' }));
+// app.use(cors({ origin: 'http://localhost:3001' }));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
