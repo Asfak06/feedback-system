@@ -9,6 +9,8 @@ const { v4: uuidv4 } = require('uuid');
 const app = express();
 const port = process.env.PORT;
 
+app.use(cors());
+
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -60,7 +62,7 @@ sequelize.sync({ force: false })
   });
 
   
-app.use(cors());
+
 
 // app.use(cors({ origin: 'http://localhost:3001' }));
 
