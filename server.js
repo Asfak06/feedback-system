@@ -1,10 +1,10 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express');
-const Sequelize = require('sequelize');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const { v4: uuidv4 } = require('uuid');
+const express = require("express");
+const Sequelize = require("sequelize");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const { v4: uuidv4 } = require("uuid");
 
 const app = express();
 const port = process.env.PORT;
@@ -67,13 +67,13 @@ sequelize.sync({ force: false })
 // app.use(cors({ origin: 'http://localhost:3001' }));
 
 
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', 'https://feedback-frontend-dc.theroyalsoft.com');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-//   next();
-// });
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://feedback-frontend-dc.theroyalsoft.com');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -120,5 +120,6 @@ app.get('/api/feedback', async (req, res) => {
 });
 
 app.listen(port, () => {
+  console.log('port consoled',port);
   console.log(`Server is listening on port ${port}`);
 });
