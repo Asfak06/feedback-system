@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const Sequelize = require("sequelize");
+const { Op } = require('sequelize');
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { v4: uuidv4 } = require("uuid");
@@ -64,11 +65,9 @@ sequelize.sync({ force: false })
   
 
 
-// app.use(cors({ origin: 'http://localhost:3001' }));
-
-
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://feedback-frontend-dc.theroyalsoft.com');
+  // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -109,16 +108,32 @@ app.get('/api/dashboard', async (req, res) => {
   }
 });
 
+
 app.get('/api/feedback', async (req, res) => {
-  console.log('get all rows')
+  console.log('get all rows');
   try {
-    const feedback = await Feedback.findAll();
+    const { page, limit, boothNumber, fromDate, toDate } = req.query;
+    const offset = (page - 1) * limit;
+    const whereClause = boothNumber ? { boothNumber } : {};
+    if (fromDate && toDate) {
+      whereClause.createdAt = {
+        [Op.between]: [new Date(fromDate), new Date(toDate)],
+      };
+    }
+    const feedback = await Feedback.findAndCountAll({
+      where: whereClause,
+      limit: Number(limit),
+      offset: Number(offset),
+      order: [['createdAt', 'DESC']],
+    });
     res.json(feedback);
   } catch (error) {
     console.error('Error fetching feedback:', error);
     res.status(500).json({ message: 'Error fetching feedback' });
   }
 });
+
+
 
 app.listen(port, () => {
   console.log('port consoled',port);
