@@ -79,6 +79,9 @@ export default function Dashboard() {
                 <h2>Total Upvotes: {feedbackCounts?.totalUpvotes || 0}</h2>
                 </Col>
                 <Col>
+                <h3>Total Neutral Votes: {Math.abs(feedbackCounts?.totalNeutralVotes) || 0}</h3>
+                </Col>
+                <Col>
                 <h2>Total Downvotes: {Math.abs(feedbackCounts?.totalDownvotes) || 0}</h2>
                 </Col>
             </Row>
@@ -136,6 +139,7 @@ export default function Dashboard() {
                     <th>Booth Name</th>
                     <th>Feedback</th>
                     <th>Vote</th>
+                    <th>Phone number</th>
                     <th>Date</th>
                     </tr>
                 </thead>
@@ -145,7 +149,8 @@ export default function Dashboard() {
                         <td> {page>1 ? ((page*5)-5)+i+1 : i+1 }</td>
                         <td>{booths[f.boothNumber-1]}</td>
                         <td>{f.feedback}</td>
-                        <td>{f.vote===1?'liked':'disliked'}</td>
+                        <td>{f.vote===1?'liked': f.vote === -1 ? 'disliked':'neutral'}</td>
+                        <td>{f.phoneNumber}</td>
                         <td>{new Date(f.updatedAt).toDateString()} {new Date(f.updatedAt).toLocaleTimeString()}</td>
                     </tr>
                     ))}
