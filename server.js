@@ -45,6 +45,10 @@ const Feedback = sequelize.define('feedback', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  phoneNumber: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
   createdAt: {
     type: Sequelize.DATE,
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
@@ -62,9 +66,6 @@ sequelize.sync({ force: false })
     console.error('Error creating table:', error);
   });
 
-  
-
-
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://feedback-frontend-dc.theroyalsoft.com');
   // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
@@ -74,7 +75,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -83,11 +83,12 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/feedback', async (req, res) => {
-  console.log('feedback post')
-  const { boothNumber, feedback, vote } = req.body;
+  console.log('feedback post');
+  const { boothNumber, feedback, vote, phoneNumber } = req.body;
   const uuid = uuidv4();
+
   try {
-    await Feedback.upsert({ uuid, boothNumber, feedback, vote });
+    await Feedback.upsert({ uuid, boothNumber, feedback, vote, phoneNumber });
     res.json({ message: 'Feedback submitted successfully' });
   } catch (error) {
     console.error('Error submitting feedback:', error);
@@ -96,18 +97,18 @@ app.post('/api/feedback', async (req, res) => {
 });
 
 app.get('/api/dashboard', async (req, res) => {
-  console.log('dashboard counts')
+  console.log('dashboard counts');
   try {
     const totalUsers = await Feedback.count({ distinct: 'uuid' });
-    const totalUpvotes = await Feedback.sum('vote', { where: { vote: { [Sequelize.Op.gt]: 0 } } });
-    const totalDownvotes = await Feedback.sum('vote', { where: { vote: { [Sequelize.Op.lt]: 0 } } });
-    res.json({ totalUsers, totalUpvotes, totalDownvotes });
+    const totalUpvotes = await Feedback.count({ where: { vote: 1 } });
+    const totalDownvotes = await Feedback.count({ where: { vote: -1 } });
+    const totalNeutralVotes = await Feedback.count({ where: { vote: 0 } });
+    res.json({ totalUsers, totalUpvotes, totalDownvotes, totalNeutralVotes });
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
     res.status(500).json({ message: 'Error fetching dashboard data' });
   }
 });
-
 
 app.get('/api/feedback', async (req, res) => {
   console.log('get all rows');
@@ -134,8 +135,7 @@ app.get('/api/feedback', async (req, res) => {
 });
 
 
-
 app.listen(port, () => {
-  console.log('port consoled',port);
+  console.log('port consoled', port);
   console.log(`Server is listening on port ${port}`);
 });
