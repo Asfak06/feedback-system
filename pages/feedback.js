@@ -74,7 +74,7 @@ function FeedbackForm() {
       {!success && (
         <>
           <div className="d-flex flex-column justify-content-center align-items-center mt-4">
-            <Image src={'/image2.png'} height={100} width={100} />
+            <Image src={'/image2.png'} height={70} width={70} />
             <br />
             <h1>জেলা প্রশাসকের কার্যালয়, ফরিদপুর</h1>
             <br />
@@ -85,55 +85,60 @@ function FeedbackForm() {
 
           <Form onSubmit={handleSubmit}>
             <h5 className="text-center my-4">
-              আমাদের সেবায় খুশি হলে 🙂 বাটনে, অখুশি হলে 😔 বাটনে, মাঝামাঝি খুশি হলে 😐️ বাটন সিলেক্ট করে সাবমিট করুন।
+               আপনার সুনির্দিষ্ট অভিমত আমাদের সেবার আগ্রহ আরো বাড়িয়ে দেবে।
             </h5>
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-4">
               <div className="d-flex align-items-center justify-content-center">
-                <label
-                  className={`form-check-label d-flex align-items-center mx-3 ${
-                    vote === 'up' ? 'bg-success text-white' : 'bg-light'
-                  }`}
-                  style={{ borderRadius: '8px', padding: '8px', cursor: 'pointer' }}
-                  onClick={onUpvote}
-                >
-                  <EmojiSmile
-                    className={`mx-2 cursor-pointer ${vote === 'up' ? 'text-white' : 'text-success'}`}
-                    size={46}
-                  />
-                </label>
+                <div className="text-center" style={{ color: vote === 'up' ? 'black' : 'gray' }}>
+                  <Button
+                    className={`form-check-label d-flex align-items-center mx-3 ${
+                      vote === 'up' ? 'bg-success text-white' : 'bg-light'
+                    }`}
+                    style={{ borderRadius: '8px', padding: '8px', cursor: 'pointer' }}
+                    onClick={onUpvote}
+                  >
+                    <EmojiSmile size={46} color={vote === 'up' ? 'white' : '#27ae60'} />
+                  </Button>
+                
+                  সন্তুষ্ট
+                </div>
 
-                <label
-                  className={`form-check-label d-flex align-items-center mx-3 ${
-                    vote === 'neutral' ? 'bg-warning text-white' : 'bg-light'
-                  }`}
-                  style={{ borderRadius: '8px', padding: '8px', cursor: 'pointer' }}
-                  onClick={onNeutralvote}
-                >
-                  <EmojiNeutral
-                    className={`mx-2 cursor-pointer ${vote === 'neutral' ? 'text-white' : 'text-warning'}`}
-                    size={46}
-                  />
-                </label>
 
-                <label
+                <div className="text-center" style={{ color: vote === 'neutral' ? 'black' : 'gray' }}>
+                  <Button
+                    className={`form-check-label d-flex align-items-center mx-auto ${
+                      vote === 'neutral' ? 'bg-warning text-white' : 'bg-light'
+                    }`}
+                    style={{ borderRadius: '8px', padding: '8px', cursor: 'pointer' }}
+                    onClick={onNeutralvote}
+                  >
+                    <EmojiNeutral size={46} color={vote === 'neutral' ? 'white' : '#f1c40f'} />
+                  </Button>
+
+                  সেবার মান বাড়াতে হবে
+                </div>
+                
+                <div className="text-center" style={{ color: vote === 'down' ? 'black' : 'gray' }}>
+                <Button
                   className={`form-check-label d-flex align-items-center mx-3 ${
                     vote === 'down' ? 'bg-danger text-white' : 'bg-light'
                   }`}
                   style={{ borderRadius: '8px', padding: '8px', cursor: 'pointer' }}
                   onClick={onDownvote}
                 >
-                  <EmojiFrown
-                    className={`mx-2 cursor-pointer ${vote === 'down' ? 'text-white' : 'text-danger'}`}
-                    size={46}
-                  />
-                </label>
+                  <EmojiFrown size={46} color={vote === 'down' ? 'white' : '#c0392b'} />
+                </Button>
+
+                  অসন্তুষ্ট
+                </div>
               </div>
             </Form.Group>
+
 
             <Form.Group className="mb-3 d-flex justify-content-center">
               <div className="w-50">
                 <Form.Control
-                  placeholder="Write opinion (optional)"
+                  placeholder="আপনার পরামর্শ লিখুন (ঐচ্ছিক)"
                   as="textarea"
                   rows={3}
                   name="feedback"
@@ -146,7 +151,7 @@ function FeedbackForm() {
             <Form.Group className="mb-3 d-flex justify-content-center">
               <div className="w-50">
                 <Form.Control
-                  placeholder="Phone number (optional)"
+                  placeholder="মোবাইল নাম্বার (ঐচ্ছিক)"
                   as="input"
                   type="text"
                   name="phoneNumber"
