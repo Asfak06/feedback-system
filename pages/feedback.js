@@ -171,8 +171,10 @@ function FeedbackForm() {
         </>
       )}
       {success && (
-      <div className="d-flex flex-column justify-content-center align-items-center mt-4 vh-100">
-        <h2>আপনার মতামত গ্রহন করা হয়েছে !</h2>
+      <div className="d-flex flex-column justify-content-center align-items-center mt-4 vh-100 p-3 text-center">
+        <h2>সেবা সম্পর্কিত আপনার অভিমত আমদের কাছে খুবই গুরুত্বপূর্ণ। </h2>
+        <br/>
+        <h4>জেলা প্রশাসন, ফরিদপুরের পক্ষ থেকে আপনাকে ধন্যবাদ।</h4>
         <Button variant="primary" className="rounded-pill mt-3" onClick={handleReturnToForm}>
           Return to Form
         </Button>
